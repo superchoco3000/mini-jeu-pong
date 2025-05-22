@@ -1,0 +1,56 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.game-container {
+    width: 90%; /* Prend 90% de la largeur de la fenêtre par défaut */
+    max-width: 500px; /* Limite la largeur maximale à 500px sur les grands écrans */
+    /* MODIFICATION DE LA HAUTEUR MAXIMALE */
+    max-height: 5vh; /* Limite la hauteur maximale à 40% de la hauteur de la fenêtre */
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    /* Ratio 4:3 => padding-bottom initial pour le ratio */
+    padding-bottom: 40%; /* Important pour le ratio basé sur la largeur */
+    height: 0;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+}
+
+@media (max-width: 600px) {
+    .game-container {
+        width: 95%; /* Prend un peu plus de largeur sur les petits écrans */
+        max-width: none; /* Permet de s'étendre si nécessaire */
+        max-height: none; /* Supprime la limite de hauteur sur les petits écrans */
+    }
+}
+
+/* Ajustement pour maintenir un minimum de hauteur visible sur écrans courts */
+@media (max-height: 300px) {
+    .game-container {
+        max-height: 90vh;
+    }
+}
