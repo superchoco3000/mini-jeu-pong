@@ -50,6 +50,10 @@ let invincibilityTimeout = null; // Pour gérer le timer d'invincibilité
 let rightPressed = false;
 let leftPressed = false;
 
+// Entrées tactiles (NOUVELLES VARIABLES)
+let touchLeft = false;
+let touchRight = false;
+
 // --- VARIABLES GLOBALES POUR LES FEUX D'ARTIFICE (MODIFIÉES POUR PLUS DE SPECTACLE) ---
 var baseFireNumber = 100; // Augmenté pour encore plus de particules par explosion
 var range = 300; 
@@ -106,7 +110,7 @@ function rendBrightColor() {
  * @param {number} velocityFactor - Facteur pour la vitesse des particules.
  * @param {number} spreadFactor - Facteur pour la dispersion des particules.
  * @returns {Array<object>} - Tableau de particules.
- */
+*/
 function createCircularPattern(fire, particleCountFactor, velocityFactor, spreadFactor) {
     var particles = [];
     var velocityBase = 5 * velocityFactor; 
@@ -232,6 +236,7 @@ class FireworkRocket {
         }
     }
 
+    // C'est la méthode draw() de la classe FireworkRocket, elle doit être ici.
     draw() {
         // Calcul du ratio pour la taille des éléments (pour les étincelles initiales et le flash)
         const sizeRatio = Math.min(canvas.width / BASE_WIDTH, canvas.height / BASE_HEIGHT);
@@ -646,12 +651,18 @@ function draw() {
         drawBall(); 
         drawPaddle(); 
         collisionDetection(); // Détection des collisions et mise à jour du score/vitesse
+        
+        // ... (autres logiques du jeu)
 
+        drawScore(); // Vérifie si cette ligne est présente et dans le if (!gameWon)
+        drawLives(); // Vérifie si cette ligne est présente et dans le if (!gameWon)
         const widthRatio = canvas.width / BASE_WIDTH;
         const paddleSpeed = 7 * widthRatio;
-        if (rightPressed && paddleX < canvas.width - paddleWidth) {
+        
+        // MODIFICADO: Ahora la raqueta se mueve si la tecla está presionada O si el botón táctil está activo
+        if ((rightPressed || touchRight) && paddleX < canvas.width - paddleWidth) {
             paddleX += paddleSpeed;
-        } else if (leftPressed && paddleX > 0) {
+        } else if ((leftPressed || touchLeft) && paddleX > 0) {
             paddleX -= paddleSpeed;
         }
 
@@ -753,6 +764,49 @@ function keyUpHandler(e) {
         leftPressed = false;
     }
 }
+
+// --- NOUVEAU: Écouteurs d'Événements pour le Contrôle Tactile (Flèches) ---
+const leftButton = document.getElementById('leftButton');
+const rightButton = document.getElementById('rightButton');
+
+if (leftButton) {
+    leftButton.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Empêche le scroll sur mobile
+        touchLeft = true;
+    });
+    leftButton.addEventListener('touchend', () => {
+        touchLeft = false;
+    });
+    leftButton.addEventListener('mousedown', () => { // Pour test sur PC avec la souris
+        touchLeft = true;
+    });
+    leftButton.addEventListener('mouseup', () => {
+        touchLeft = false;
+    });
+    leftButton.addEventListener('mouseout', () => { // Pour s'assurer d'arrêter le mouvement si la souris quitte le bouton
+        touchLeft = false;
+    });
+}
+
+if (rightButton) {
+    rightButton.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Empêche le scroll sur mobile
+        touchRight = true;
+    });
+    rightButton.addEventListener('touchend', () => {
+        touchRight = false;
+    });
+    rightButton.addEventListener('mousedown', () => { // Pour test sur PC avec la souris
+        touchRight = true;
+    });
+    rightButton.addEventListener('mouseup', () => {
+        touchRight = false;
+    });
+    rightButton.addEventListener('mouseout', () => { // Pour s'assurer d'arrêter le mouvement si la souris quitte le bouton
+        touchRight = false;
+    });
+}
+
 
 // --- Configuration Initiale du Jeu et Démarrage ---
 

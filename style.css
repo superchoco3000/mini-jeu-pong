@@ -54,3 +54,31 @@ canvas {
         max-height: 90vh;
     }
 }
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.controls button {
+    font-size: 2em;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 8px;
+    background-color: #0095DD;
+    color: white;
+    cursor: pointer;
+    user-select: none; /* Evita la selección de texto al tocar */
+}
+
+.controls button:active {
+    background-color: #0056b3;
+}
+
+@media (min-width: 601px) {
+    .controls {
+        display: none; /* Ocultar los controles en pantallas más grandes */
+    }
+}
